@@ -1,98 +1,91 @@
+**English** | [Deutsch](README.de.md)
+
 # LLM-Wiki-Methodik
 
-**Methodik-Handbuch für selbst-aktualisierende, LLM-gepflegte Wissensbasen.**
+**A methods handbook for self-updating, LLM-maintained knowledge bases.** The handbook chapters are written in German.
 
-Dieses Repo dokumentiert eine erprobte Methodik, um eine kuratierte Markdown-Wissensbasis
-(Obsidian-kompatibel, git-versioniert) über ein sich schnell änderndes Produkt-Ökosystem
-aufzubauen und **automatisch aktuell zu halten** — mit LLM-Unterstützung nur dort, wo
-Sprachverständnis nötig ist, und deterministischem Scripting überall sonst.
+This repository documents a tested method for building a curated Markdown knowledge base (Obsidian-compatible, versioned in git) about a fast-changing product ecosystem, and **keeping it up to date automatically**: LLM help only where language understanding is needed, deterministic scripting everywhere else.
 
-> **Herkunft & Abgrenzung:** Abstrahiert aus einem realen Projekt (eine LLM-gepflegte
-> Wissensbasis über ein grosses Vendor-AI-Ökosystem mit ~50 Entitäten). Dieses Repo
-> enthält **ausschliesslich die verallgemeinerte Methodik** — keine Inhalte, keine
-> internen Daten, keine Kunden- oder Firmenbezüge des Ursprungsprojekts.
+> **Origin and scope:** abstracted from a real project (an LLM-maintained knowledge base about a large vendor AI
+> ecosystem with about 50 entities). This repository contains **only the generalised method**: no content, no
+> internal data, and no references to customers or companies from the original project.
 
 ---
 
-## Das Problem
+## The problem
 
-Produkt-Ökosysteme mit hoher Änderungsdynamik (Cloud-AI-Plattformen, Framework-Landschaften,
-Compliance-Regelwerke) haben eine Wissens-Halbwertszeit von unter 12 Monaten. Klassische
-Wikis veralten schneller, als Menschen sie pflegen. Reine LLM-Recherche on demand
-halluziniert und kennt die eigene Bewertungslogik nicht.
+Product ecosystems that change quickly (cloud AI platforms, framework landscapes, compliance rulebooks) have a knowledge half-life of under 12 months. Classic wikis go stale faster than people can maintain them. On-demand LLM research hallucinates and does not know your own evaluation logic.
 
-**Die Antwort:** ein Dual-Layer-System.
+**The answer:** a dual-layer system.
 
 ```
                     ┌──────────────────────────────────────┐
-                    │  AUTOMATISIERUNGSSCHICHT             │
+                    │  AUTOMATION LAYER                    │
                     │                                      │
-[RSS / Blog / Docs]─►  fetch          (Feeds einlesen)     │
+[RSS / blog / docs]─►  fetch          (read feeds)         │
                     │      ↓                               │
-                    │  classify       (Clippings scoren)   │
+                    │  classify       (score clippings)    │
                     │      ↓                               │
-                    │  filter         (Keyword-Match, 0 LLM)│
+                    │  filter         (keyword match, 0 LLM)│
                     │      ↓                               │
-                    │  patch          (LLM Tool-Use, Delta) │
+                    │  patch          (LLM tool use, delta) │
                     │      ↓                               │
-                    │  apply          (Markdown-Mutation)  │
+                    │  apply          (Markdown mutation)  │
                     │      ↓                               │
-                    │  update-indices (MOC-Tabellen)       │
+                    │  update-indices (MOC tables)         │
                     │      ↓                               │
-                    │  audit          (Template-Gate)      │
+                    │  audit          (template gate)      │
                     │      ↓                               │
-                    │  CI → Pull Request                   │
+                    │  CI → pull request                   │
                     │      ↓                               │
-                    │  [Mensch reviewt & merged]           │
+                    │  [a human reviews and merges]        │
                     └────────────┬─────────────────────────┘
-                                 │  git = Single Source of Truth
+                                 │  git = single source of truth
                                  ▼
                     ┌──────────────────────────────────────┐
-                    │  KONSUMSCHICHT (read-mostly Mirrors) │
+                    │  CONSUMPTION LAYER (read-mostly mirrors)│
                     │                                      │
-                    │  Dokument-Store-Mirror                │
-                    │      → Chat-Agent (RAG, kuratiert)   │
+                    │  document-store mirror               │
+                    │      → chat agent (RAG, curated)     │
                     │                                      │
-                    │  Static-Site-Build                    │
-                    │      → Katalog / Vergleich / Graph   │
+                    │  static site build                   │
+                    │      → catalogue / comparison / graph│
                     └──────────────────────────────────────┘
 ```
 
-**Kernprinzip:** Das LLM macht nur, was Regeln nicht können (Sprache verstehen,
-Sektion wählen, Changelog formulieren). Alles andere ist deterministisches Scripting —
-reproduzierbar, testbar, tokenfrei.
+**Core principle:** the LLM only does what rules cannot (understand language, choose a section, write the changelog). Everything else is deterministic scripting: reproducible, testable, and free of tokens.
 
 ---
 
-## Inhalt
+## Contents
 
-| Dokument | Thema |
+| Document | Topic |
 |---|---|
-| [01-wissensarchitektur.md](01-wissensarchitektur.md) | Note-Anatomie, Tier/Watch-System, MOC-Theorie, Schreibprinzipien |
-| [02-update-pipeline.md](02-update-pipeline.md) | Die 7 Pipeline-Stages, Token-Ökonomie, State-Management, Idempotenz |
-| [03-governance.md](03-governance.md) | Git als Wahrheit, PR-Gate, Audits, Secrets-Hygiene, Anti-Patterns |
-| [04-deep-research.md](04-deep-research.md) | Tiered-Research-Prompts, Drei-Pfade-SOP, Quota-Ökonomie, Prompt-Verbesserungs-Loop |
-| [05-konsumschicht.md](05-konsumschicht.md) | Dokument-Store-Mirror, deklarativer Chat-Agent, Static-Site-Patterns |
-| [06-adaption.md](06-adaption.md) | Eignungs-Kriterien, Implementierungs-Reihenfolge von null, Validierungs-Fragen |
+| [01-wissensarchitektur.md](01-wissensarchitektur.md) | Knowledge architecture: note anatomy, tier/watch system, MOC theory, writing principles |
+| [02-update-pipeline.md](02-update-pipeline.md) | The 7 pipeline stages, token economics, state management, idempotency |
+| [03-governance.md](03-governance.md) | Git as the truth, PR gate, audits, secrets hygiene, anti-patterns |
+| [04-deep-research.md](04-deep-research.md) | Tiered research prompts, three-path SOP, quota economics, prompt improvement loop |
+| [05-konsumschicht.md](05-konsumschicht.md) | Consumption layer: document-store mirror, declarative chat agent, static site patterns |
+| [06-adaption.md](06-adaption.md) | Fit criteria, implementation order from zero, validation questions |
 
-**Templates** (generisch, direkt instanziierbar):
+**Templates** (generic, ready to instantiate):
 
-| Template | Zweck |
+| Template | Purpose |
 |---|---|
-| [templates/entity-note-template.md](templates/entity-note-template.md) | Vollständige Entitäts-Note (7 Pflicht- + 3 optionale Sektionen) |
-| [templates/moc-template.md](templates/moc-template.md) | Map-of-Content-Note (Themen-Hub) |
-| [templates/registry.schema.yaml](templates/registry.schema.yaml) | Entitäten-Registry (Single Source of Truth) |
-| [templates/sources.schema.yaml](templates/sources.schema.yaml) | Feed-Quellen-Registry |
+| [templates/entity-note-template.md](templates/entity-note-template.md) | Full entity note (7 required + 3 optional sections) |
+| [templates/moc-template.md](templates/moc-template.md) | Map-of-content note (topic hub) |
+| [templates/registry.schema.yaml](templates/registry.schema.yaml) | Entity registry (single source of truth) |
+| [templates/sources.schema.yaml](templates/sources.schema.yaml) | Feed source registry |
 
 ---
 
-## Für wen ist das?
+## Who is it for?
 
-Die Methodik funktioniert für jede Domäne mit:
+The method works for any domain with:
 
-- **20–150 abgrenzbaren Entitäten** (Produkte, Frameworks, Konzepte, Regularien)
-- **klarer Relevanz-Hierarchie** (Must-Know / Important / Awareness)
-- **regelmässigen externen Update-Quellen** (RSS, Blogs, offizielle Docs, GitHub-Releases)
-- **Bedarf nach kontinuierlicher Pflege** (Halbwertszeit < 12 Monate)
+- **20 to 150 distinct entities** (products, frameworks, concepts, regulations)
+- **a clear relevance hierarchy** (must-know / important / awareness)
+- **regular external update sources** (RSS, blogs, official docs, GitHub releases)
+- **a need for continuous maintenance** (half-life under 12 months)
 
-Details und ein Von-null-Fahrplan: [06-adaption.md](06-adaption.md).
+Details and a roadmap from zero: [06-adaption.md](06-adaption.md).
