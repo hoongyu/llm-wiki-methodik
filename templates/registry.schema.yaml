@@ -1,0 +1,49 @@
+# Entitäten-Registry — Single Source of Truth
+#
+# Jede Entität wird ZUERST hier registriert. Notes, MOC-Tabellen, Pipeline-Filter
+# und UI werden ausschliesslich von dieser Datei (plus den referenzierten
+# Markdown-Notes) abgeleitet.
+#
+# Frontmatter der Notes ist bewusst redundant zu dieser Datei — der Audit-Step
+# prüft die Konsistenz beider Quellen.
+
+products:
+  # ─── Aktive Entität (vollständiges Beispiel) ──────────────────────────────
+  - slug: beispiel-entitaet                # eindeutig, kebab-case, stabil
+    note: "Beispiel-Entität.md"            # Dateiname im Vault
+    primary_home_moc: "Beispiel MOC"       # genau EINE Home-MOC
+    other_mocs:                            # optional: Querschnitts-MOCs
+      - "Lizenzen MOC"
+    tagline: "Ein-Satz-Positionierung für MOC-Tabellen und UI"
+    tier: 1                                # 1 Must-Know | 2 Important | 3 Awareness
+    watch: close                           # close | standard | passive
+    status: ga                             # announced | preview | ga | deprecated
+    layer: runtime                         # domänenspezifisches Layer-Modell,
+                                           # z.B. governance|security|logic|runtime|model|data|integration
+    keywords:                              # für den Pipeline-Filter (Stage 3)
+      - "Beispiel-Entität"
+      - "Vorgängername"                    # Legacy-Aliasse mitführen!
+    aliases:
+      - "BE"                               # kurze Aliasse: Filter nutzt Wort-Boundary
+    sources: [vendor-blog, vendor-updates] # Feed-IDs aus sources.yaml
+    changelog_trigger_sections:            # Sektionen, deren Änderung einen
+      - "Status & Pricing"                 # Changelog-Eintrag erzwingt
+      - "Kernkonzept"
+    research_depth: deep                   # deep | stub — steuert Research-Backlog
+    last_verified: 2026-01-01
+    enabled: true                          # Ein/Aus-Schalter für die Pipeline
+
+  # ─── Deprecated Entität (Minimal-Beispiel) ────────────────────────────────
+  - slug: altes-framework
+    note: "Altes Framework.md"
+    primary_home_moc: "Beispiel MOC"
+    tagline: "Abgekündigt — Nachfolger siehe successor"
+    tier: 3
+    watch: passive
+    status: deprecated
+    deprecated: true
+    successor: beispiel-entitaet           # Pflicht bei deprecated!
+    deprecation_date: 2025-Q4
+    keywords: ["Altes Framework"]
+    enabled: true                          # bleibt enabled: News über EOL-Fristen
+                                           # und Migrationspfade sind relevant

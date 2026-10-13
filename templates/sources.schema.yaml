@@ -1,0 +1,39 @@
+# Feed-Quellen-Registry für Stage `fetch`
+#
+# Nur offizielle/kuratierte Quellen — die Qualität der Pipeline ist die Qualität
+# dieser Whitelist. Jede Quelle deklariert, welche Entitäten sie abdeckt
+# (`covers`), damit der Filter gezielter matchen kann.
+
+sources:
+  - id: vendor-blog                        # Feed-ID, referenziert in registry `sources:`
+    name: "Hersteller-Blog"
+    type: rss                              # rss | atom | json-feed | github-releases
+    url: "https://example.com/blog/feed/"
+    tag: official                          # official | docs | community
+    covers: [beispiel-entitaet]            # slugs; leer = alle
+    enabled: true
+
+  - id: vendor-updates
+    name: "Hersteller Update-Feed"
+    type: json-feed
+    url: "https://example.com/updates/feed.json"
+    tag: official
+    covers: []                             # deckt alle Entitäten ab
+    enabled: true
+
+  - id: framework-releases
+    name: "Framework GitHub-Releases"
+    type: github-releases
+    url: "https://api.github.com/repos/example-org/example-repo/releases"
+    tag: docs
+    covers: [beispiel-entitaet]
+    enabled: true
+
+  - id: community-forum
+    name: "Community-Forum (deaktiviert — zu viel Rauschen)"
+    type: rss
+    url: "https://example.com/community/feed/"
+    tag: community
+    covers: []
+    enabled: false                         # Quellen nie löschen, nur deaktivieren —
+                                           # die Entscheidung bleibt dokumentiert
